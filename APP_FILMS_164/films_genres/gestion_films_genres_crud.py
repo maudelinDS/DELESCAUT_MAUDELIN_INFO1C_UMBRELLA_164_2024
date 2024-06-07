@@ -285,18 +285,18 @@ def genres_films_afficher_data(valeur_id_film_selected_dict):
     print("valeur_id_film_selected_dict...", valeur_id_film_selected_dict)
     try:
 
-        strsql_film_selected = """SELECT weather_id, name_weather, score ,idActivityWeather, GROUP_CONCAT(activity_id) as ActivityWeather FROM t_activity_weather
-                                        INNER JOIN t_weather ON t_weather.weather_id = t_activity_weather.fk_weather
-                                        INNER JOIN t_activity ON t_activity.activity_id = t_activity_weather.fk_activity
-                                        WHERE weather_id = %(value_id_film_selected)s GROUP BY weather_id, name_weather, score
-"""
+        strsql_film_selected = """SELECT weather_id, name_weather, GROUP_CONCAT(activity_id) as ActivityWeather FROM t_activity_weather
+                                                INNER JOIN t_weather ON t_weather.weather_id = t_activity_weather.fk_weather
+                                                INNER JOIN t_activity ON t_activity.activity_id = t_activity_weather.fk_activity
+                                                WHERE weather_id = %(value_id_film_selected)s GROUP BY weather_id, name_weather, score
+        """
 
         strsql_genres_films_non_attribues = """SELECT activity_id, name_activity FROM t_activity WHERE activity_id not in(SELECT activity_id as idActivityWeather FROM t_activity_weather
                                                     INNER JOIN t_weather ON t_weather.weather_id = t_activity_weather.fk_weather
                                                     INNER JOIN t_activity ON t_activity.activity_id = t_activity_weather.fk_activity
                                                     WHERE weather_id = %(value_id_film_selected)s)"""
 
-        strsql_genres_films_attribues = """SELECT weather_id, activity_id, name_activity, score,idActivityWeather FROM t_activity_weather
+        strsql_genres_films_attribues = """SELECT weather_id, activity_id, name_activity, score FROM t_activity_weather
                                             INNER JOIN t_weather ON t_weather.weather_id = t_activity_weather.fk_weather
                                             INNER JOIN t_activity ON t_activity.activity_id = t_activity_weather.fk_activity
                                             WHERE weather_id = %(value_id_film_selected)s"""
